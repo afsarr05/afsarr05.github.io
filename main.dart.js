@@ -37909,12 +37909,12 @@ for(s=0;s<6;++s)q.push(new A.Gf(A.a3F($.azx[s].h(0,"img"),r,r,r,r),new A.ff($.az
 return A.aqU(B.kb,q,10,10)}}
 A.LL.prototype={
 L(a){var s=null
-return A.z4(A.b([A.rc(!1,!0,B.DC,s,!0,s,s,s,s,s,s,s,s,s,new A.ad1(),s,s,s,s,s,s,s),B.jT,A.rc(!1,!0,B.DB,s,!0,s,s,s,s,s,s,s,s,s,new A.ad2(),s,s,s,s,s,s,s),B.jT,A.rc(!1,!0,B.DA,s,!0,s,s,s,s,s,s,s,s,s,new A.ad3(),s,s,s,s,s,s,s),B.jT,A.rc(!1,!0,B.Dz,s,!0,s,s,s,s,s,s,s,s,s,new A.ad4(),s,s,s,s,s,s,s)],t.p),B.a7,B.ek,B.aS)}}
+return A.z4(A.b([A.rc(!1,!0,B.DB,s,!0,s,s,s,s,s,s,s,s,s,new A.ad1(),s,s,s,s,s,s,s),B.jT,A.rc(!1,!0,B.DC,s,!0,s,s,s,s,s,s,s,s,s,new A.ad2(),s,s,s,s,s,s,s),B.jT,A.rc(!1,!0,B.DA,s,!0,s,s,s,s,s,s,s,s,s,new A.ad3(),s,s,s,s,s,s,s),B.jT,A.rc(!1,!0,B.Dz,s,!0,s,s,s,s,s,s,s,s,s,new A.ad4(),s,s,s,s,s,s,s)],t.p),B.a7,B.ek,B.aS)}}
 A.ad1.prototype={
-$0(){return A.qe("https://www.facebook.com/profile.php?id=61571101329632&mibextid=ZbWKwL")},
+$0(){return A.qe("https://wa.me/+923410050175?text=Hello, I would like to know more about your services.")},
 $S:0}
 A.ad2.prototype={
-$0(){return A.qe("https://wa.me/+923410050175?text=Hello, I would like to know more about your services.")},
+$0(){return A.qe("https://www.facebook.com/profile.php?id=61571101329632&mibextid=ZbWKwL")},
 $S:0}
 A.ad3.prototype={
 $0(){return A.qe("https://www.linkedin.com/in/afsar-ali-053244341?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app")},
