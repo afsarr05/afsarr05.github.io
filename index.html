@@ -1,39 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="scroll-smooth">
+
 <head>
-  <script type="text/javascript"> window.flutterWebRenderer = "html"; </script>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afsar Ali | Flutter Developer</title>
+    <!-- <script type="module" src="script/firebase.js"></script> -->
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="script/firebase.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-bg': '#F8FAFC',
+                        'secondary-bg': '#FFFFFF',
+                        'primary-text': '#1E293B',
+                        'secondary-text': '#64748B',
+                        'accent-blue': '#3B82F6',
+                        'accent-purple': '#8B5CF6',
+                        'dark-bg': '#0F172A',
+                        'dark-secondary': '#1E293B',
+                    }
+                }
+            },
+            darkMode: 'class',
+        }
+    </script>
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="/">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="This website is my web showcase" content="Afsar Programming">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="afsar_programming">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>afsar_programming</title>
-  <link rel="manifest" href="manifest.json">
 </head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
+
+<body class="font-sans text-primary-text bg-primary-bg transition-colors duration-300 dark:bg-dark-bg dark:text-white">
+
+    <!-- Preloader -->
+    <div id="preloader"
+        class="fixed inset-0 bg-white dark:bg-dark-bg z-50 flex items-center justify-center transition-opacity duration-500">
+        <div class="flex flex-col items-center">
+            <div class="w-16 h-16 border-4 border-accent-blue border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-accent-blue font-medium">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button id="theme-toggle"
+        class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-accent-blue text-white shadow-lg flex items-center justify-center hover:bg-accent-purple transition-all">
+        <i class="fas fa-moon hidden dark:block"></i>
+        <i class="fas fa-sun block dark:hidden"></i>
+    </button>
+
+    <!-- Header Navigation -->
+    <div id="header-container"></div> <!-- Make sure this exists in your HTML -->
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+        class="fixed top-0 left-0 w-full h-screen bg-secondary-bg z-40 transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col items-center justify-center space-y-8 dark:bg-dark-secondary">
+        <a href="#about"
+            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">About</a>
+        <a href="#projects"
+            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Projects</a>
+        <a href="#skills"
+            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Skills</a>
+        <a href="#experience"
+            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Experience</a>
+        <a href="#contact"
+            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Contact</a>
+
+        <div class="absolute bottom-8">
+            <button id="theme-toggle-mobile"
+                class="w-10 h-10 rounded-full bg-accent-blue text-white flex items-center justify-center">
+                <i class="fas fa-moon hidden dark:block"></i>
+                <i class="fas fa-sun block dark:hidden"></i>
+            </button>
+        </div>
+    </div>
+
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section id="hero"
+            class="min-h-screen flex items-center justify-center text-center bg-primary-bg px-4 relative overflow-hidden dark:bg-dark-bg">
+            <!-- Animated background elements -->
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-accent-blue/10 rounded-full wave"></div>
+            <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-accent-purple/10 rounded-full wave"
+                style="animation-delay: 2s;"></div>
+
+            <div class="max-w-3xl space-y-6 z-10">
+                <div class="floating">
+                    <h1 class="text-5xl md:text-7xl font-bold animate-slide-up" style="animation-delay: 0.2s;">
+                        Afsar Ali
+                    </h1>
+                    <p class="text-xl md:text-2xl text-secondary-text mt-2 animate-slide-up dark:text-gray-400"
+                        style="animation-delay: 0.4s;">
+                        Flutter Developer
+                    </p>
+                </div>
+
+                <p class="text-lg text-secondary-text max-w-xl mx-auto animate-slide-up dark:text-gray-400"
+                    style="animation-delay: 0.6s;">
+                    Crafting beautiful, high-performance cross-platform applications with Flutter
+                </p>
+
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 mt-8 animate-slide-up"
+                    style="animation-delay: 0.8s;">
+                   <a href="https://drive.google.com/uc?export=download&id=1ezNuv6FLyFJscvaKwQgQd3Ioqen8xEyP"
+   class="download-cv-btn bg-gradient-to-r from-accent-blue to-accent-purple text-white font-medium py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
+   download="Afsar_Ali_CV.pdf">
+   Download CV
+</a>
+                    <a href="#contact"
+                        class="get-in-touch-btn border border-accent-blue text-accent-blue font-medium py-3 px-8 rounded-full hover:bg-accent-blue hover:text-white transition-all dark:text-white dark:border-accent-purple dark:hover:bg-accent-purple">
+                        Get in Touch
+                    </a>
+                </div>
+
+                <div class="pt-12 animate-slide-up" style="animation-delay: 1s;">
+                    <div class="relative flex items-center justify-center">
+                        <div class="absolute border-2 border-accent-blue/20 rounded-full w-12 h-12 animate-pulse"></div>
+                        <a href="#about"
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-accent-blue text-white">
+                            <i class="fas fa-arrow-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <div id="about-container"></div>
+
+        <!-- Projects Section -->
+        <div id="projects-container"></div>
+
+        <!-- Skills Section -->
+        <div id="skills-container"></div>
+
+        <!-- Experience Section -->
+        <div id="experience-container"></div>
+
+        <!-- Contact Section -->
+        <div id="contact-container"></div>
+        <!-- Footer -->
+        <div id="footer-container"></div>
+    </main>
+
+    <!-- Custom Message Box -->
+    <div id="message-box"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 ease-in-out flex items-center space-x-2 z-50"
+        style="display: none;">
+        <i class="fas fa-check-circle text-green-400"></i>
+        <span></span>
+    </div>
+    <script src="script/script.js"></script>
 </body>
+
 </html>
