@@ -1,9 +1,5 @@
-// AI Chatbot with OpenAI Integration
 // chatbot.js
-
-// ⚠️ IMPORTANT: Replace with your actual OpenAI API key
-// For production, use environment variables or backend proxy
-const OPENAI_API_KEY = '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';
+// AI Chatbot Frontend - Secure version with backend proxy
 
 // System prompt to guide the AI's responses
 const SYSTEM_PROMPT = `You are an AI assistant for Afsar Ali, a Flutter & AI Developer. Your role is to help visitors learn about his services and expertise.
@@ -15,7 +11,7 @@ SERVICES OFFERED:
    - Firebase integration (Auth, Database, Storage, Notifications)
    - State management (GetX, Provider, Riverpod)
    - RESTful API integration
-   - Pricing: Starting from $500-$2000 depending on complexity
+   - Pricing: Starting from $100-$2000 depending on complexity
    - Timeline: 2-8 weeks for most projects
 
 2. Web Development
@@ -23,7 +19,7 @@ SERVICES OFFERED:
    - Modern frameworks (React, Vue, vanilla JS)
    - WordPress development and customization
    - E-commerce solutions
-   - Pricing: $300-$1500 depending on requirements
+   - Pricing: $90-$1500 depending on requirements
    - Timeline: 1-4 weeks
 
 3. AI Chatbots & Automation
@@ -31,7 +27,7 @@ SERVICES OFFERED:
    - Intelligent customer service automation
    - Workflow automation solutions
    - Integration with existing systems
-   - Pricing: $400-$2000 based on complexity
+   - Pricing: $150-$2000 based on complexity
    - Timeline: 1-3 weeks
 
 4. API Integrations
@@ -39,7 +35,7 @@ SERVICES OFFERED:
    - Custom API development
    - Payment gateway integration (Stripe, PayPal)
    - Social media API integration
-   - Pricing: $200-$800 per integration
+   - Pricing: $199-$800 per integration
    - Timeline: Few days to 1 week
 
 ABOUT AFSAR:
@@ -78,6 +74,9 @@ class Chatbot {
             }
         ];
         
+        // Backend API endpoint
+        this.apiEndpoint = '/api/chat';
+        
         this.init();
     }
 
@@ -98,6 +97,12 @@ class Chatbot {
                 this.notification.classList.remove('hidden');
             }
         }, 5000);
+
+        // Add welcome message
+        this.addMessage(
+            "Hi! I'm Afsar's AI assistant. I can help you learn about his Flutter development, web development, and AI chatbot services. What would you like to know?",
+            'assistant'
+        );
     }
 
     open() {
@@ -151,7 +156,10 @@ class Chatbot {
         } catch (error) {
             console.error('Error:', error);
             this.removeTypingIndicator();
-            this.addMessage('Sorry, I encountered an error. Please try again or contact Afsar directly at afsarprogrammer123@gmail.com', 'assistant');
+            this.addMessage(
+                'Sorry, I encountered an error. Please try again or contact Afsar directly at afsarprogrammer123@gmail.com',
+                'assistant'
+            );
         } finally {
             // Re-enable input
             this.input.disabled = false;
@@ -167,23 +175,21 @@ class Chatbot {
             content: userMessage
         });
 
-        // Call OpenAI API
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        // Call backend API
+        const response = await fetch(this.apiEndpoint, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'gpt-4', // or 'gpt-3.5-turbo' for faster/cheaper responses
-                messages: this.conversationHistory,
-                max_tokens: 500,
-                temperature: 0.7
+                message: userMessage,
+                history: this.conversationHistory
             })
         });
 
         if (!response.ok) {
-            throw new Error(`API Error: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `API Error: ${response.status}`);
         }
 
         const data = await response.json();
@@ -290,79 +296,5 @@ class Chatbot {
 
 // Initialize chatbot when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if API key is set
-    if (OPENAI_API_KEY === 'YOUR_OPENAI_API_KEY_HERE') {
-        console.warn('⚠️ OpenAI API key not set! Chatbot will not work properly.');
-        console.log('Please add your API key in chatbot.js');
-        
-        // Show a message in the chatbot
-        setTimeout(() => {
-            const chatbot = new Chatbot();
-            chatbot.addMessage(
-                'The chatbot is currently in demo mode. To enable AI responses, please configure the OpenAI API key in the chatbot.js file. For now, you can contact Afsar directly at afsarprogrammer123@gmail.com',
-                'assistant'
-            );
-        }, 100);
-    } else {
-        new Chatbot();
-    }
+    new Chatbot();
 });
-
-// Alternative: Backend Proxy Approach (Recommended for Production)
-// Instead of using API key directly in frontend, create a backend endpoint
-
-/*
-// Example backend endpoint (Node.js/Express)
-app.post('/api/chat', async (req, res) => {
-    const { message, history } = req.body;
-    
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: 'gpt-4',
-                messages: history,
-                max_tokens: 500
-            })
-        });
-        
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to get response' });
-    }
-});
-
-// Then update the frontend to call your backend:
-async getAIResponse(userMessage) {
-    this.conversationHistory.push({
-        role: 'user',
-        content: userMessage
-    });
-
-    const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            message: userMessage,
-            history: this.conversationHistory
-        })
-    });
-
-    const data = await response.json();
-    const assistantMessage = data.choices[0].message.content;
-
-    this.conversationHistory.push({
-        role: 'assistant',
-        content: assistantMessage
-    });
-
-    return assistantMessage;
-}
-*/
