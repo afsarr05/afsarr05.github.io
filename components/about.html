@@ -1,44 +1,177 @@
 <section id="about" class="py-20 px-4 md:py-32 bg-secondary-bg dark:bg-dark-secondary">
-            <div class="container mx-auto max-w-5xl flex flex-col md:flex-row items-center md:space-x-12">
-                <div class="w-full md:w-2/5 mb-8 md:mb-0 transform transition-transform duration-500 ease-in-out" data-animate-on-scroll>
-                    <div class="relative">
-                        <div class="absolute -inset-4 border-2 border-accent-blue/20 rounded-full animate-pulse"></div>
-                        <img src="https://firebasestorage.googleapis.com/v0/b/again-firebase-82baf.appspot.com/o/team%2FPhotoroom-20250206_194324.png?alt=media&token=5198866b-4bd5-4fcc-a283-30d8326795e1" alt="Afsar Ali" class="rounded-full shadow-xl w-full h-auto relative z-10">
-                    </div>
-                </div>
-                <div class="w-full md:w-3/5 transform transition-transform duration-500 ease-in-out" data-animate-on-scroll>
-                    <h2 class="text-4xl font-bold mb-6 relative inline-block">
-                        About Me
-                        <span class="absolute -bottom-2 left-0 w-16 h-1 bg-gradient-to-r from-accent-blue to-accent-purple"></span>
-                    </h2>
-                    <p class="mb-4 text-secondary-text leading-relaxed dark:text-gray-400">
-                        With over <span class="font-semibold text-primary-text dark:text-white">3 years of experience</span> as a Flutter developer, I specialize in crafting elegant, high-performance <span class="font-semibold text-primary-text dark:text-white">cross-platform applications</span> for Android, iOS, Web, and Windows. My passion lies in transforming innovative ideas into seamless digital experiences.
-                    </p>
-                    <p class="text-secondary-text leading-relaxed dark:text-gray-400">
-                        I am dedicated to clean code and intuitive design, always focusing on creating robust and user-friendly products. I'm excited about the future of mobile technology and have a long-term goal of starting my own software house.
-                    </p>
+    <div class="container mx-auto max-w-6xl">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- Left: Image -->
+            <div class="order-2 md:order-1" data-animate-on-scroll>
+                <div class="relative">
+                    <!-- Decorative elements -->
+                    <div class="absolute -inset-4 bg-gradient-to-r from-accent-blue to-accent-purple rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                    <div class="absolute -inset-8 border-2 border-accent-blue/20 rounded-full animate-spin-slow"></div>
                     
-                    <div class="grid grid-cols-2 gap-4 mt-8">
+                    <!-- Main image -->
+                    <div class="relative z-10 rounded-full overflow-hidden border-4 border-white dark:border-dark-bg shadow-2xl">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/again-firebase-82baf.appspot.com/o/team%2FPhotoroom-20250206_194324.png?alt=media&token=5198866b-4bd5-4fcc-a283-30d8326795e1" 
+                             alt="Afsar Ali" 
+                             class="w-full h-auto">
+                    </div>
+                    
+                    <!-- Floating badge -->
+                    <div class="absolute -bottom-4 -right-4 bg-white dark:bg-dark-card px-6 py-3 rounded-2xl shadow-xl z-20 animate-float">
                         <div class="flex items-center space-x-2">
-                            <div class="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center text-accent-blue">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <div>
-                                <p class="font-semibold">3+ Years</p>
-                                <p class="text-sm text-secondary-text dark:text-gray-400">Experience</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2">
-                            <div class="w-10 h-10 rounded-full bg-accent-purple/10 flex items-center justify-center text-accent-purple">
-                                <i class="fas fa-project-diagram"></i>
-                            </div>
-                            <div>
-                                <p class="font-semibold">20+ Projects</p>
-                                <p class="text-sm text-secondary-text dark:text-gray-400">Completed</p>
-                            </div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                            <span class="font-semibold text-sm dark:text-white">Available for Work</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Right: Content -->
+            <div class="order-1 md:order-2" data-animate-on-scroll>
+                <div class="inline-block px-4 py-2 bg-accent-blue/10 dark:bg-accent-blue/20 rounded-full mb-4">
+                    <span class="text-accent-blue dark:text-accent-cyan font-medium text-sm">Who I Am</span>
+                </div>
+                
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    <span class="gradient-text">About Me</span>
+                </h2>
+                
+                <div class="space-y-4 text-secondary-text dark:text-gray-400 text-lg leading-relaxed">
+                    <p>
+                        I'm an <span class="font-semibold text-primary-text dark:text-white">AI-focused mobile app developer</span> with <span class="font-semibold text-primary-text dark:text-white">3+ years of experience</span> building smooth, high-performance <span class="font-semibold text-primary-text dark:text-white">cross-platform apps</span> using <span class="font-semibold text-primary-text dark:text-white">Flutter</span> and modern AI technologies.
+                    </p>
+                    <p>
+                        I currently lead a development team at <a href="https://www.linkedin.com/company/ajeero/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-semibold text-accent-blue dark:text-accent-cyan hover:underline transition-all group">
+                            <span>Ajeero</span>
+                            <i class="fab fa-linkedin text-base opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                        </a> and am also pursuing my <span class="font-semibold text-primary-text dark:text-white">Bachelor's degree in Artificial Intelligence (BSAI)</span> at <span class="font-semibold text-primary-text dark:text-white">UMT Lahore</span>.
+                    </p>
+                    <p>
+                        I enjoy turning ideas into practical, user-friendly solutions and love working on products that solve <span class="font-semibold text-primary-text dark:text-white">real-world problems</span> through smart, scalable design.
+                    </p>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 gap-6 mt-8">
+                    <div class="bg-primary-bg dark:bg-dark-card p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center">
+                                <i class="fas fa-calendar-alt text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold dark:text-white">3+</p>
+                                <p class="text-sm text-secondary-text dark:text-gray-400">Years Experience</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-primary-bg dark:bg-dark-card p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center">
+                                <i class="fas fa-project-diagram text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold dark:text-white">20+</p>
+                                <p class="text-sm text-secondary-text dark:text-gray-400">Projects Completed</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-primary-bg dark:bg-dark-card p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+                                <i class="fas fa-star text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold dark:text-white">100%</p>
+                                <p class="text-sm text-secondary-text dark:text-gray-400">Client Satisfaction</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-primary-bg dark:bg-dark-card p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                                <i class="fas fa-code text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold dark:text-white">24/7</p>
+                                <p class="text-sm text-secondary-text dark:text-gray-400">Support Available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-accent-blue to-accent-purple text-white font-medium rounded-2xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+                        Let's Work Together
+                    </a>
+                    <a href="#services" class="px-8 py-4 border-2 border-accent-blue dark:border-accent-cyan text-accent-blue dark:text-accent-cyan font-medium rounded-2xl hover:bg-accent-blue hover:text-white dark:hover:bg-accent-cyan dark:hover:text-dark-bg transition-all">
+                        View Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Custom scrollbar styles if needed */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.7);
+}
+</style>

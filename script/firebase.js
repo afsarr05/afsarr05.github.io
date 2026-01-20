@@ -1,8 +1,11 @@
-// Import Firebase SDKs
+// Enhanced Firebase Script with Project Modal Support
+// script/firebase.js
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
-// Your Firebase config (from Firebase Console)
+
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAizUdQv_RTVsUS-3Ogit_ztrYhvyOdLWY",
   authDomain: "again-firebase-82baf.firebaseapp.com",
@@ -15,61 +18,83 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-
-// Firestore reference
 const db = getFirestore(app);
-
-// Storage reference
 const storage = getStorage(app);
 
+// Load Work Projects
 async function loadProjects() {
   const querySnapshot = await getDocs(collection(db, "projects"));
   const grid = document.getElementById("projects-grid");
+  
+  if (!grid) return;
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
     const images = Array.isArray(data.imageUrl) ? data.imageUrl : [];
 
-    // fallback image if no images
-    const slides = images.length
-      ? images.map((url, i) => `
-          <div class="slide ${i === 0 ? 'active' : ''}">
-            <img src="${url}" alt="slide ${i}" class="w-full h-60 object-contain rounded-xl">
-          </div>
-        `).join("")
-      : `
-          <div class="slide active">
-            <img src="https://placehold.co/600x400/E5E7EB/4B5563?text=No+Image" class="w-full h-60 object-cover rounded-xl">
-          </div>
-        `;
+    // Fallback image if no images
+    const firstImage = images.length > 0 
+      ? images[0] 
+      : "https://placehold.co/600x400/E5E7EB/4B5563?text=No+Image";
 
     const tags = (data.tags || []).map(
-      tag => `<span class="px-3 py-1 bg-accent-blue/10 text-accent-blue text-xs rounded-full">${tag}</span>`
+      tag => `<span class="px-3 py-1 bg-accent-blue/10 text-accent-blue text-xs rounded-full font-medium">${tag}</span>`
     ).join("");
 
     const card = `
-      <div class="project-card bg-secondary-bg p-6 rounded-2xl shadow-lg dark:bg-dark-secondary relative" data-animate-on-scroll>
-        <!-- Slider -->
-        <div class="slider relative overflow-hidden rounded-xl mb-4 h-60">
-          ${slides}
+      <div class="project-card group bg-secondary-bg dark:bg-dark-card rounded-3xl shadow-lg overflow-hidden cursor-pointer" 
+           data-animate-on-scroll
+           data-project-id="${doc.id}">
+        <!-- Image -->
+        <div class="relative overflow-hidden h-64">
+          <img src="${firstImage}" 
+               alt="${data.title || 'Project'}" 
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-4 left-4 right-4">
+              <button class="w-full px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-xl border border-white/30 hover:bg-white/30 transition-all">
+                <i class="fas fa-expand-alt mr-2"></i>
+                View Details
+              </button>
+            </div>
+          </div>
+          ${images.length > 1 ? `
+            <div class="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-sm text-white text-sm rounded-full">
+              <i class="fas fa-images mr-1"></i>
+              ${images.length}
+            </div>
+          ` : ''}
         </div>
 
-        <!-- Project info -->
-        <h3 class="text-xl font-semibold mb-2 dark:text-white">${data.title || "Untitled Project"}</h3>
-        <p class="text-secondary-text mb-4 dark:text-gray-400">${data.description || ""}</p>
-        <div class="flex flex-wrap gap-2 mb-4">${tags}</div>
+        <!-- Content -->
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2 dark:text-white group-hover:text-accent-blue transition-colors">
+            ${data.title || "Untitled Project"}
+          </h3>
+          <p class="text-secondary-text dark:text-gray-400 mb-4 line-clamp-2">
+            ${data.description || ""}
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">${tags}</div>
 
-        <!-- Links -->
-        <div class="flex space-x-3">
-          ${data.github ? `
-          <a href="${data.github}" target="_blank" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-accent-blue hover:bg-accent-blue hover:text-white transition-colors">
-            <i class="fab fa-github"></i>
-          </a>` : ""}
-          ${data.live ? `
-          <a href="${data.live}" target="_blank" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-accent-blue hover:bg-accent-blue hover:text-white transition-colors">
-            <i class="fas fa-external-link-alt"></i>
-          </a>` : ""}
+          <!-- Links -->
+          <div class="flex space-x-3">
+            ${data.github ? `
+            <a href="${data.github}" 
+               target="_blank" 
+               onclick="event.stopPropagation()"
+               class="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-dark-secondary text-primary-text dark:text-white rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+              <i class="fab fa-github"></i>
+              <span class="text-sm">Code</span>
+            </a>` : ""}
+            ${data.live ? `
+            <a href="${data.live}" 
+               target="_blank"
+               onclick="event.stopPropagation()"
+               class="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-xl hover:shadow-lg transition-all">
+              <i class="fas fa-external-link-alt"></i>
+              <span class="text-sm">Demo</span>
+            </a>` : ""}
+          </div>
         </div>
       </div>
     `;
@@ -77,56 +102,80 @@ async function loadProjects() {
     grid.insertAdjacentHTML("beforeend", card);
   });
 
-  // After cards inserted → start sliders
-  startSliders();
+  // Add click handlers to open modal
+  attachProjectClickHandlers();
 }
+
+// Load Hobby Projects
 async function loadHobbyProjects() {
   const querySnapshot = await getDocs(collection(db, "hobby_projects"));
   const grid = document.getElementById("hobby-projects-grid");
+  
+  if (!grid) return;
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
     const images = Array.isArray(data.imageUrl) ? data.imageUrl : [];
 
-    // fallback image if no images
-    const slides = images.length
-      ? images.map((url, i) => `
-          <div class="slide ${i === 0 ? 'active' : ''}">
-            <img src="${url}" alt="slide ${i}" class="w-full h-60 object-contain rounded-xl">
-          </div>
-        `).join("")
-      : `
-          <div class="slide active">
-            <img src="https://placehold.co/600x400/E5E7EB/4B5563?text=No+Image" class="w-full h-60 object-cover rounded-xl">
-          </div>
-        `;
+    const firstImage = images.length > 0 
+      ? images[0] 
+      : "https://placehold.co/600x400/E5E7EB/4B5563?text=No+Image";
 
     const tags = (data.tags || []).map(
-      tag => `<span class="px-3 py-1 bg-accent-blue/10 text-accent-blue text-xs rounded-full">${tag}</span>`
+      tag => `<span class="px-3 py-1 bg-accent-purple/10 text-accent-purple text-xs rounded-full font-medium">${tag}</span>`
     ).join("");
 
     const card = `
-      <div class="project-card bg-secondary-bg p-6 rounded-2xl shadow-lg dark:bg-dark-secondary relative" data-animate-on-scroll>
-        <!-- Slider -->
-        <div class="slider relative overflow-hidden rounded-xl mb-4 h-60">
-          ${slides}
+      <div class="project-card group bg-secondary-bg dark:bg-dark-card rounded-3xl shadow-lg overflow-hidden cursor-pointer" 
+           data-animate-on-scroll
+           data-project-id="${doc.id}">
+        <div class="relative overflow-hidden h-64">
+          <img src="${firstImage}" 
+               alt="${data.title || 'Project'}" 
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-4 left-4 right-4">
+              <button class="w-full px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-xl border border-white/30 hover:bg-white/30 transition-all">
+                <i class="fas fa-expand-alt mr-2"></i>
+                View Details
+              </button>
+            </div>
+          </div>
+          ${images.length > 1 ? `
+            <div class="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-sm text-white text-sm rounded-full">
+              <i class="fas fa-images mr-1"></i>
+              ${images.length}
+            </div>
+          ` : ''}
         </div>
 
-        <!-- Project info -->
-        <h3 class="text-xl font-semibold mb-2 dark:text-white">${data.title || "Untitled Project"}</h3>
-        <p class="text-secondary-text mb-4 dark:text-gray-400">${data.description || ""}</p>
-        <div class="flex flex-wrap gap-2 mb-4">${tags}</div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2 dark:text-white group-hover:text-accent-purple transition-colors">
+            ${data.title || "Untitled Project"}
+          </h3>
+          <p class="text-secondary-text dark:text-gray-400 mb-4 line-clamp-2">
+            ${data.description || ""}
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">${tags}</div>
 
-        <!-- Links -->
-        <div class="flex space-x-3">
-          ${data.github ? `
-          <a href="${data.github}" target="_blank" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-accent-blue hover:bg-accent-blue hover:text-white transition-colors">
-            <i class="fab fa-github"></i>
-          </a>` : ""}
-          ${data.live ? `
-          <a href="${data.live}" target="_blank" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-accent-blue hover:bg-accent-blue hover:text-white transition-colors">
-            <i class="fas fa-external-link-alt"></i>
-          </a>` : ""}
+          <div class="flex space-x-3">
+            ${data.github ? `
+            <a href="${data.github}" 
+               target="_blank" 
+               onclick="event.stopPropagation()"
+               class="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-dark-secondary text-primary-text dark:text-white rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+              <i class="fab fa-github"></i>
+              <span class="text-sm">Code</span>
+            </a>` : ""}
+            ${data.live ? `
+            <a href="${data.live}" 
+               target="_blank"
+               onclick="event.stopPropagation()"
+               class="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-accent-purple to-accent-cyan text-white rounded-xl hover:shadow-lg transition-all">
+              <i class="fas fa-external-link-alt"></i>
+              <span class="text-sm">Demo</span>
+            </a>` : ""}
+          </div>
         </div>
       </div>
     `;
@@ -134,34 +183,68 @@ async function loadHobbyProjects() {
     grid.insertAdjacentHTML("beforeend", card);
   });
 
-  // After cards inserted → start sliders
-  startSliders();
+  attachProjectClickHandlers();
 }
 
-function startSliders() {
-  const sliders = document.querySelectorAll(".slider");
-  sliders.forEach((slider) => {
-    const slides = slider.querySelectorAll(".slide");
-    let index = 0;
-
-    setInterval(() => {
-      slides[index].classList.remove("active");
-      index = (index + 1) % slides.length;
-      slides[index].classList.add("active");
-    }, 3000); // change every 3s
+// Attach click handlers to project cards
+function attachProjectClickHandlers() {
+  const projectCards = document.querySelectorAll('.project-card');
+  
+  projectCards.forEach(card => {
+    // Remove existing listener to avoid duplicates
+    const newCard = card.cloneNode(true);
+    card.parentNode.replaceChild(newCard, card);
+    
+    // Add new listener
+    newCard.addEventListener('click', async (e) => {
+      // Don't open modal if clicking on a link
+      if (e.target.closest('a')) return;
+      
+      const projectId = newCard.dataset.projectId;
+      if (!projectId) return;
+      
+      // Get project data
+      const projectData = await getProjectData(projectId);
+      if (!projectData) return;
+      
+      // Open modal
+      if (window.projectModal) {
+        window.projectModal.open(projectData);
+      }
+    });
   });
 }
 
+// Get project data from Firestore
+async function getProjectData(projectId) {
+  try {
+    // Try work projects first
+    let querySnapshot = await getDocs(collection(db, "projects"));
+    let projectDoc = null;
+    
+    querySnapshot.forEach((doc) => {
+      if (doc.id === projectId) {
+        projectDoc = { id: doc.id, ...doc.data() };
+      }
+    });
+    
+    // If not found, try hobby projects
+    if (!projectDoc) {
+      querySnapshot = await getDocs(collection(db, "hobby_projects"));
+      querySnapshot.forEach((doc) => {
+        if (doc.id === projectId) {
+          projectDoc = { id: doc.id, ...doc.data() };
+        }
+      });
+    }
+    
+    return projectDoc;
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    return null;
+  }
+}
+
+// Initialize
 loadProjects();
 loadHobbyProjects();
-
-
-
-
-// // Example: Get file from Firebase Storage
-// async function getFile() {
-//     const fileRef = ref(storage, "images/example.png");
-//     const url = await getDownloadURL(fileRef);
-//     console.log("File URL:", url);
-// }
-// getFile();

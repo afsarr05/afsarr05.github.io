@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afsar Ali | Flutter Developer</title>
-    <!-- <script type="module" src="script/firebase.js"></script> -->
+    <title>Afsar Ali | Flutter & AI Developer</title>
     <link rel="stylesheet" href="style/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="script/firebase.js"></script>
@@ -20,31 +18,31 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        'primary-bg': '#F8FAFC',
+                        'primary-bg': '#FAFAFA',
                         'secondary-bg': '#FFFFFF',
-                        'primary-text': '#1E293B',
-                        'secondary-text': '#64748B',
+                        'primary-text': '#0A0A0A',
+                        'secondary-text': '#6B7280',
                         'accent-blue': '#3B82F6',
                         'accent-purple': '#8B5CF6',
-                        'dark-bg': '#0F172A',
-                        'dark-secondary': '#1E293B',
+                        'accent-cyan': '#06B6D4',
+                        'dark-bg': '#0A0A0A',
+                        'dark-secondary': '#1A1A1A',
+                        'dark-card': '#171717',
                     }
                 }
             },
             darkMode: 'class',
         }
     </script>
-
 </head>
 
-<body class="font-sans text-primary-text bg-primary-bg transition-colors duration-300 dark:bg-dark-bg dark:text-white">
+<body class="font-sans text-primary-text bg-primary-bg transition-colors duration-300 dark:bg-dark-bg dark:text-white antialiased">
 
     <!-- Preloader -->
-    <div id="preloader"
-        class="fixed inset-0 bg-white dark:bg-dark-bg z-50 flex items-center justify-center transition-opacity duration-500">
+    <div id="preloader" class="fixed inset-0 bg-white dark:bg-dark-bg z-50 flex items-center justify-center transition-opacity duration-500">
         <div class="flex flex-col items-center">
             <div class="w-16 h-16 border-4 border-accent-blue border-t-transparent rounded-full animate-spin"></div>
             <p class="mt-4 text-accent-blue font-medium">Loading...</p>
@@ -52,90 +50,149 @@
     </div>
 
     <!-- Theme Toggle -->
-    <button id="theme-toggle"
-        class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-accent-blue text-white shadow-lg flex items-center justify-center hover:bg-accent-purple transition-all">
-        <i class="fas fa-moon hidden dark:block"></i>
-        <i class="fas fa-sun block dark:hidden"></i>
+    <button id="theme-toggle" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-blue to-accent-purple text-white shadow-xl flex items-center justify-center hover:shadow-2xl transition-all hover:scale-110">
+        <i class="fas fa-moon hidden dark:block text-lg"></i>
+        <i class="fas fa-sun block dark:hidden text-lg"></i>
     </button>
 
-    <!-- Header Navigation -->
-    <div id="header-container"></div> <!-- Make sure this exists in your HTML -->
+    <!-- AI Chatbot Button -->
+    <button id="chatbot-toggle" class="fixed bottom-6 right-24 z-40 w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-purple to-accent-cyan text-white shadow-xl flex items-center justify-center hover:shadow-2xl transition-all hover:scale-110">
+        <i class="fas fa-robot text-lg"></i>
+        <span id="chat-notification" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center hidden">1</span>
+    </button>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu"
-        class="fixed top-0 left-0 w-full h-screen bg-secondary-bg z-40 transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col items-center justify-center space-y-8 dark:bg-dark-secondary">
-        <a href="#about"
-            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">About</a>
-        <a href="#projects"
-            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Projects</a>
-        <a href="#skills"
-            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Skills</a>
-        <a href="#experience"
-            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Experience</a>
-        <a href="#contact"
-            class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Contact</a>
+    <!-- AI Chatbot Modal -->
+    <div id="chatbot-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-end md:items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-card rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="chatbot-container">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-accent-blue to-accent-purple rounded-t-3xl">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-lg">AI Assistant</h3>
+                        <p class="text-white/80 text-sm">Ask me anything about my services</p>
+                    </div>
+                </div>
+                <button id="close-chatbot" class="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors">
+                    <i class="fas fa-times text-white"></i>
+                </button>
+            </div>
 
-        <div class="absolute bottom-8">
-            <button id="theme-toggle-mobile"
-                class="w-10 h-10 rounded-full bg-accent-blue text-white flex items-center justify-center">
-                <i class="fas fa-moon hidden dark:block"></i>
-                <i class="fas fa-sun block dark:hidden"></i>
-            </button>
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <!-- Welcome Message -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-100 dark:bg-dark-secondary rounded-2xl rounded-tl-sm p-4">
+                            <p class="text-sm">Hi! I'm Afsar's AI assistant. I can help you learn about:</p>
+                            <ul class="mt-2 space-y-1 text-sm">
+                                <li>• Flutter Mobile App Development</li>
+                                <li>• Web Development Services</li>
+                                <li>• AI Chatbots & Automation</li>
+                                <li>• API Integrations</li>
+                            </ul>
+                            <p class="mt-2 text-sm">What would you like to know?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+                <form id="chat-form" class="flex space-x-2">
+                    <input type="text" id="chat-input" placeholder="Ask about services, pricing, timeline..." class="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark-secondary focus:outline-none focus:ring-2 focus:ring-accent-blue transition-all" required>
+                    <button type="submit" id="send-message" class="px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-purple text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <p class="text-xs text-secondary-text dark:text-gray-500 mt-2 text-center">Powered by OpenAI GPT-4</p>
+            </div>
         </div>
     </div>
 
-    <main class="pt-24">
-        <!-- Hero Section -->
-        <section id="hero"
-            class="min-h-screen flex items-center justify-center text-center bg-primary-bg px-4 relative overflow-hidden dark:bg-dark-bg">
-            <!-- Animated background elements -->
-            <div class="absolute -top-20 -right-20 w-64 h-64 bg-accent-blue/10 rounded-full wave"></div>
-            <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-accent-purple/10 rounded-full wave"
-                style="animation-delay: 2s;"></div>
+    <!-- Header Navigation -->
+    <div id="header-container"></div>
 
-            <div class="max-w-3xl space-y-6 z-10">
-                <div class="floating">
-                    <h1 class="text-5xl md:text-7xl font-bold animate-slide-up" style="animation-delay: 0.2s;">
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed top-0 left-0 w-full h-screen bg-secondary-bg dark:bg-dark-secondary z-40 transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col items-center justify-center space-y-8">
+        <a href="#about" class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">About</a>
+        <a href="#services" class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Services</a>
+        <a href="#projects" class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Projects</a>
+        <a href="#skills" class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Skills</a>
+        <a href="#contact" class="text-3xl text-primary-text hover:text-accent-blue transition-colors mobile-link dark:text-white">Contact</a>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-card rounded-3xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" id="project-modal-container">
+            <div class="relative h-full overflow-y-auto">
+                <!-- Close Button -->
+                <button id="close-project-modal" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <!-- Modal Content -->
+                <div id="project-modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center text-center px-4 relative overflow-hidden bg-gradient-to-br from-primary-bg via-white to-accent-blue/5 dark:from-dark-bg dark:via-dark-secondary dark:to-accent-blue/5">
+            <!-- Animated background -->
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute -top-40 -right-40 w-96 h-96 bg-accent-blue/10 rounded-full blur-3xl animate-pulse"></div>
+                <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-accent-purple/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent-cyan/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="max-w-5xl space-y-8 z-10 relative">
+                <div class="animate-fade-in-up">
+                    <div class="inline-block px-4 py-2 bg-accent-blue/10 dark:bg-accent-blue/20 rounded-full mb-6">
+                        <span class="text-accent-blue dark:text-accent-cyan font-medium text-sm">Available for Freelance Projects</span>
+                    </div>
+                    <h1 class="text-6xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-accent-blue via-accent-purple to-accent-cyan bg-clip-text text-transparent">
                         Afsar Ali
                     </h1>
-                    <p class="text-xl md:text-2xl text-secondary-text mt-2 animate-slide-up dark:text-gray-400"
-                        style="animation-delay: 0.4s;">
-                        Flutter Developer
+                    <p class="text-2xl md:text-3xl text-secondary-text dark:text-gray-400 font-light mb-2">
+                        Flutter & AI Developer
+                    </p>
+                    <p class="text-lg text-secondary-text dark:text-gray-500 max-w-2xl mx-auto">
+                        Crafting intelligent mobile solutions with cutting-edge AI integration
                     </p>
                 </div>
 
-                <p class="text-lg text-secondary-text max-w-xl mx-auto animate-slide-up dark:text-gray-400"
-                    style="animation-delay: 0.6s;">
-                    Crafting beautiful, high-performance cross-platform applications with Flutter
-                </p>
-
-                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 mt-8 animate-slide-up"
-                    style="animation-delay: 0.8s;">
-                   <a href="https://drive.google.com/uc?export=download&id=1iMkE_ddXfN1ofL28nkQcYE3GzRyn__tz"
-   class="download-cv-btn bg-gradient-to-r from-accent-blue to-accent-purple text-white font-medium py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
-   download="Afsar_Ali_CV.pdf">
-   Download CV
-</a>
-                    <a href="#contact"
-                        class="get-in-touch-btn border border-accent-blue text-accent-blue font-medium py-3 px-8 rounded-full hover:bg-accent-blue hover:text-white transition-all dark:text-white dark:border-accent-purple dark:hover:bg-accent-purple">
-                        Get in Touch
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <a href="https://drive.google.com/uc?export=download&id=1iMkE_ddXfN1ofL28nkQcYE3GzRyn__tz" class="group px-8 py-4 bg-gradient-to-r from-accent-blue to-accent-purple text-white font-medium rounded-2xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1" download="Afsar_Ali_CV.pdf">
+                        <span class="flex items-center space-x-2">
+                            <i class="fas fa-download"></i>
+                            <span>Download CV</span>
+                        </span>
+                    </a>
+                    <a href="#contact" class="px-8 py-4 border-2 border-accent-blue dark:border-accent-cyan text-accent-blue dark:text-accent-cyan font-medium rounded-2xl hover:bg-accent-blue hover:text-white dark:hover:bg-accent-cyan dark:hover:text-dark-bg transition-all">
+                        Let's Talk
                     </a>
                 </div>
 
-                <div class="pt-12 animate-slide-up" style="animation-delay: 1s;">
-                    <div class="relative flex items-center justify-center">
-                        <div class="absolute border-2 border-accent-blue/20 rounded-full w-12 h-12 animate-pulse"></div>
-                        <a href="#about"
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-accent-blue text-white">
-                            <i class="fas fa-arrow-down"></i>
-                        </a>
-                    </div>
+                <div class="pt-12 animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <a href="#about" class="inline-flex items-center justify-center w-12 h-12 rounded-full border-2 border-accent-blue dark:border-accent-cyan text-accent-blue dark:text-accent-cyan hover:bg-accent-blue hover:text-white dark:hover:bg-accent-cyan dark:hover:text-dark-bg transition-all animate-bounce">
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- About Me Section -->
+        <!-- About Section -->
         <div id="about-container"></div>
+
+        <!-- Services Section -->
+        <div id="services-container"></div>
 
         <!-- Projects Section -->
         <div id="projects-container"></div>
@@ -148,18 +205,19 @@
 
         <!-- Contact Section -->
         <div id="contact-container"></div>
+
         <!-- Footer -->
         <div id="footer-container"></div>
     </main>
 
-    <!-- Custom Message Box -->
-    <div id="message-box"
-        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 ease-in-out flex items-center space-x-2 z-50"
-        style="display: none;">
-        <i class="fas fa-check-circle text-green-400"></i>
-        <span></span>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-2xl shadow-xl opacity-0 transition-all duration-300 flex items-center space-x-3 z-50 pointer-events-none">
+        <i class="fas fa-check-circle text-green-400 dark:text-green-600"></i>
+        <span id="toast-message"></span>
     </div>
+
     <script src="script/script.js"></script>
+    <script src="script/chatbot.js"></script>
 </body>
 
 </html>
