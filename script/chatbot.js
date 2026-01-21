@@ -3,7 +3,7 @@
 
 // ⚠️ IMPORTANT: Replace with your actual OpenAI API key
 // For production, use environment variables or backend proxy
-const aikey = 'YOUR_OPENAI_API_KEY_HERE';
+const aikey = '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';
 
 // System prompt to guide the AI's responses
 const SYSTEM_PROMPT = `You are an AI assistant for Afsar Ali, a Flutter & AI Developer. Your role is to help visitors learn about his services and expertise.
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             const chatbot = new Chatbot();
             chatbot.addMessage(
-                'The chatbot is currently in demo mode. To enable AI responses, please configure the OpenAI API key in the chatbot.js file. For now, you can contact Afsar directly at afsarprogrammer123@gmail.com',
+                'The chatbot is currently in demo mode. To enable AI responses, please configure the OpenAI API key in the chatbot.js file. For now, you can contact Afsar directly at afsar.tech005@gmail.com',
                 'assistant'
             );
         }, 100);
