@@ -5,21 +5,30 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebas
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAizUdQv_RTVsUS-3Ogit_ztrYhvyOdLWY",
-  authDomain: "again-firebase-82baf.firebaseapp.com",
-  projectId: "again-firebase-82baf",
-  storageBucket: "again-firebase-82baf.appspot.com",
-  messagingSenderId: "885321882779",
-  appId: "1:885321882779:web:36f5eef08cb8bb9140ba3e",
-  measurementId: "G-PLE2XPXQ03"
-};
+// Get Firebase config from config.js or use default
+let firebaseConfig;
+if (typeof window !== 'undefined' && window.config) {
+    firebaseConfig = window.config.get('firebase');
+} else {
+    // Fallback config
+    firebaseConfig = {
+        apiKey: "AIzaSyAizUdQv_RTVsUS-3Ogit_ztrYhvyOdLWY",
+        authDomain: "again-firebase-82baf.firebaseapp.com",
+        projectId: "again-firebase-82baf",
+        storageBucket: "again-firebase-82baf.appspot.com",
+        messagingSenderId: "885321882779",
+        appId: "1:885321882779:web:36f5eef08cb8bb9140ba3e",
+        measurementId: "G-PLE2XPXQ03"
+    };
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+// Store all projects data globally for modal access
+const projectsData = new Map();
 
 // Load Work Projects
 async function loadProjects() {
@@ -30,6 +39,14 @@ async function loadProjects() {
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
+    const projectId = doc.id;
+    
+    // Store full project data including all images
+    projectsData.set(projectId, {
+      id: projectId,
+      ...data
+    });
+    
     const images = Array.isArray(data.imageUrl) ? data.imageUrl : [];
 
     // Fallback image if no images
@@ -44,7 +61,8 @@ async function loadProjects() {
     const card = `
       <div class="project-card group bg-secondary-bg dark:bg-dark-card rounded-3xl shadow-lg overflow-hidden cursor-pointer" 
            data-animate-on-scroll
-           data-project-id="${doc.id}">
+           data-project-id="${projectId}"
+           data-project-type="work">
         <!-- Image -->
         <div class="relative overflow-hidden h-64">
           <img src="${firstImage}" 
@@ -115,6 +133,14 @@ async function loadHobbyProjects() {
 
   querySnapshot.forEach((doc) => {
     const data = doc.data();
+    const projectId = doc.id;
+    
+    // Store full project data including all images
+    projectsData.set(projectId, {
+      id: projectId,
+      ...data
+    });
+    
     const images = Array.isArray(data.imageUrl) ? data.imageUrl : [];
 
     const firstImage = images.length > 0 
@@ -128,7 +154,8 @@ async function loadHobbyProjects() {
     const card = `
       <div class="project-card group bg-secondary-bg dark:bg-dark-card rounded-3xl shadow-lg overflow-hidden cursor-pointer" 
            data-animate-on-scroll
-           data-project-id="${doc.id}">
+           data-project-id="${projectId}"
+           data-project-type="hobby">
         <div class="relative overflow-hidden h-64">
           <img src="${firstImage}" 
                alt="${data.title || 'Project'}" 
@@ -203,11 +230,15 @@ function attachProjectClickHandlers() {
       const projectId = newCard.dataset.projectId;
       if (!projectId) return;
       
-      // Get project data
-      const projectData = await getProjectData(projectId);
-      if (!projectData) return;
+      // Get project data from our stored map
+      const projectData = projectsData.get(projectId);
       
-      // Open modal
+      if (!projectData) {
+        console.error('Project data not found for ID:', projectId);
+        return;
+      }
+      
+      // Open modal with the correct project data
       if (window.projectModal) {
         window.projectModal.open(projectData);
       }
@@ -215,34 +246,10 @@ function attachProjectClickHandlers() {
   });
 }
 
-// Get project data from Firestore
+// Get project data - now simplified since we store it in memory
 async function getProjectData(projectId) {
-  try {
-    // Try work projects first
-    let querySnapshot = await getDocs(collection(db, "projects"));
-    let projectDoc = null;
-    
-    querySnapshot.forEach((doc) => {
-      if (doc.id === projectId) {
-        projectDoc = { id: doc.id, ...doc.data() };
-      }
-    });
-    
-    // If not found, try hobby projects
-    if (!projectDoc) {
-      querySnapshot = await getDocs(collection(db, "hobby_projects"));
-      querySnapshot.forEach((doc) => {
-        if (doc.id === projectId) {
-          projectDoc = { id: doc.id, ...doc.data() };
-        }
-      });
-    }
-    
-    return projectDoc;
-  } catch (error) {
-    console.error('Error fetching project:', error);
-    return null;
-  }
+  // Return from our stored data
+  return projectsData.get(projectId) || null;
 }
 
 // Initialize

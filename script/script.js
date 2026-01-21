@@ -23,19 +23,56 @@ components.forEach(({ id, file }) => {
         .catch(err => console.error(`Error loading ${file}:`, err));
 });
 
-// Email sending function
-function sendMail(event) {
+// Email sending function with fallback
+function handleContactFormSubmit(event) {
     event.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-
-    const subject = encodeURIComponent('Portfolio Contact Form Message');
+    
+    const form = event.target;
+    const name = form.querySelector('#name').value;
+    const email = form.querySelector('#email').value;
+    const message = form.querySelector('#message').value;
+    
+    // Get contact email from config or use default
+    let contactEmail = 'afsar.tech005@gmail.com';
+    if (typeof window !== 'undefined' && window.config) {
+        contactEmail = window.config.get('contact.email') || contactEmail;
+    }
+    
+    // Compose email content
+    const subject = encodeURIComponent(`Portfolio Contact: Message from ${name}`);
     const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        `Name: ${name}\n` +
+        `Email: ${email}\n` +
+        `\nMessage:\n${message}\n\n` +
+        `---\nSent from your portfolio website`
     );
+    
+    // Try to open mailto link
+    const mailtoLink = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+    
+    try {
+        // Open mailto link
+        window.location.href = mailtoLink;
+        
+        // Show success message
+        showToast('Opening your email client...');
+        
+        // Reset form after a short delay
+        setTimeout(() => {
+            form.reset();
+            showToast('Thank you! Your email client should now be open.');
+        }, 1000);
+    } catch (error) {
+        console.error('Error opening email client:', error);
+        showToast('Please email directly to: ' + contactEmail);
+    }
+    
+    return false;
+}
 
-    window.location.href = `mailto:afsarprogrammer123@gmail.com?subject=${subject}&body=${body}`;
+// Legacy support for old function name
+function sendMail(event) {
+    return handleContactFormSubmit(event);
 }
 
 // Project Modal Handler
@@ -392,9 +429,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contact form
     const contactForm = document.getElementById('contact-form');
     contactForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        sendMail(e);
-        showToast('Message sent! Redirecting to your email client...');
-        setTimeout(() => contactForm.reset(), 1000);
+        handleContactFormSubmit(e);
     });
 });

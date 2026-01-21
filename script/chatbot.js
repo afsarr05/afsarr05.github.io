@@ -1,5 +1,11 @@
+// AI Chatbot with Firebase Cloud Function Integration
 // chatbot.js
-// AI Chatbot Frontend - Secure version with backend proxy
+
+// Firebase Cloud Function URL
+const FIREBASE_FUNCTION_URL = 'https://chatwithai-itb4a2oayq-uc.a.run.app';
+
+// Updated contact email
+const CONTACT_EMAIL = 'afsar.tech005@gmail.com';
 
 // System prompt to guide the AI's responses
 const SYSTEM_PROMPT = `You are an AI assistant for Afsar Ali, a Flutter & AI Developer. Your role is to help visitors learn about his services and expertise.
@@ -11,7 +17,7 @@ SERVICES OFFERED:
    - Firebase integration (Auth, Database, Storage, Notifications)
    - State management (GetX, Provider, Riverpod)
    - RESTful API integration
-   - Pricing: Starting from $100-$2000 depending on complexity
+   - Pricing: Starting from $500-$2000 depending on complexity
    - Timeline: 2-8 weeks for most projects
 
 2. Web Development
@@ -19,7 +25,7 @@ SERVICES OFFERED:
    - Modern frameworks (React, Vue, vanilla JS)
    - WordPress development and customization
    - E-commerce solutions
-   - Pricing: $90-$1500 depending on requirements
+   - Pricing: $300-$1500 depending on requirements
    - Timeline: 1-4 weeks
 
 3. AI Chatbots & Automation
@@ -27,7 +33,7 @@ SERVICES OFFERED:
    - Intelligent customer service automation
    - Workflow automation solutions
    - Integration with existing systems
-   - Pricing: $150-$2000 based on complexity
+   - Pricing: $400-$2000 based on complexity
    - Timeline: 1-3 weeks
 
 4. API Integrations
@@ -35,7 +41,7 @@ SERVICES OFFERED:
    - Custom API development
    - Payment gateway integration (Stripe, PayPal)
    - Social media API integration
-   - Pricing: $199-$800 per integration
+   - Pricing: $200-$800 per integration
    - Timeline: Few days to 1 week
 
 ABOUT AFSAR:
@@ -44,16 +50,16 @@ ABOUT AFSAR:
 - Freelance developer on Upwork
 - Specializes in clean code and intuitive design
 - Available for freelance projects
-- Contact: afsarprogrammer123@gmail.com
-- Location: Pakistan
+- Contact: ${CONTACT_EMAIL}
+- Location: Lahore, Pakistan
 
 RESPONSE GUIDELINES:
 - Be friendly, professional, and helpful
 - Provide specific pricing and timeline estimates
-- Encourage visitors to contact Afsar for custom quotes
+- Encourage visitors to contact Afsar for custom quotes at ${CONTACT_EMAIL}
 - Ask clarifying questions when needed
 - Keep responses concise but informative
-- If asked about something outside your knowledge, politely redirect to contacting Afsar directly`;
+- If asked about something outside your knowledge, politely redirect to contacting Afsar directly at ${CONTACT_EMAIL}`;
 
 class Chatbot {
     constructor() {
@@ -73,9 +79,6 @@ class Chatbot {
                 content: SYSTEM_PROMPT
             }
         ];
-        
-        // Backend API endpoint
-        this.apiEndpoint = '/api/chat';
         
         this.init();
     }
@@ -97,12 +100,6 @@ class Chatbot {
                 this.notification.classList.remove('hidden');
             }
         }, 5000);
-
-        // Add welcome message
-        this.addMessage(
-            "Hi! I'm Afsar's AI assistant. I can help you learn about his Flutter development, web development, and AI chatbot services. What would you like to know?",
-            'assistant'
-        );
     }
 
     open() {
@@ -156,10 +153,7 @@ class Chatbot {
         } catch (error) {
             console.error('Error:', error);
             this.removeTypingIndicator();
-            this.addMessage(
-                'Sorry, I encountered an error. Please try again or contact Afsar directly at afsarprogrammer123@gmail.com',
-                'assistant'
-            );
+            this.addMessage('Sorry, I encountered an error. Please try again or contact Afsar directly at ' + CONTACT_EMAIL, 'assistant');
         } finally {
             // Re-enable input
             this.input.disabled = false;
@@ -169,39 +163,55 @@ class Chatbot {
     }
 
     async getAIResponse(userMessage) {
-        // Add user message to history
+        // Add user message to conversation history
         this.conversationHistory.push({
             role: 'user',
             content: userMessage
         });
 
-        // Call backend API
-        const response = await fetch(this.apiEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: userMessage,
-                history: this.conversationHistory
-            })
-        });
+        try {
+            // Call Firebase Cloud Function
+            const response = await fetch(FIREBASE_FUNCTION_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    messages: this.conversationHistory
+                })
+            });
 
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `API Error: ${response.status}`);
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('API Response Error:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            console.log('API Response:', data); // Debug log
+
+            // Validate response structure
+            if (data && data.choices && data.choices.length > 0) {
+                const assistantMessage = data.choices[0].message.content;
+                
+                // Add assistant response to conversation history
+                this.conversationHistory.push({
+                    role: 'assistant',
+                    content: assistantMessage
+                });
+
+                return assistantMessage;
+            } else {
+                console.error('Unexpected response structure:', data);
+                throw new Error('Unexpected API response structure');
+            }
+        } catch (error) {
+            console.error('Error in getAIResponse:', error);
+            // Remove the user message from history if request failed
+            this.conversationHistory.pop();
+            throw error;
         }
-
-        const data = await response.json();
-        const assistantMessage = data.choices[0].message.content;
-
-        // Add assistant response to history
-        this.conversationHistory.push({
-            role: 'assistant',
-            content: assistantMessage
-        });
-
-        return assistantMessage;
     }
 
     addMessage(text, sender) {
@@ -296,5 +306,12 @@ class Chatbot {
 
 // Initialize chatbot when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize the chatbot
     new Chatbot();
+    console.log('✅ Chatbot initialized with Firebase Cloud Function');
+    console.log('📡 Using endpoint:', FIREBASE_FUNCTION_URL);
 });
+
+// Note: Your Firebase Cloud Function handles the OpenAI API calls securely
+// The API key is stored as an environment variable in Firebase Functions
+// No need to expose it in the frontend code
