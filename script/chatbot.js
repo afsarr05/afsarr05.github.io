@@ -3,7 +3,7 @@
 
 // ⚠️ IMPORTANT: Replace with your actual OpenAI API key
 // For production, use environment variables or backend proxy
-const aikey = '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';
+const aikey = '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';
 
 // System prompt to guide the AI's responses
 const SYSTEM_PROMPT = `You are an AI assistant for Afsar Ali, a Flutter & AI Developer. Your role is to help visitors learn about his services and expertise.
