@@ -1,24 +1,98 @@
-<!-- Header Navigation -->
-    <header class="fixed top-0 left-0 w-full bg-secondary-bg bg-opacity-90 backdrop-blur-sm z-50 shadow-sm py-4 dark:bg-dark-secondary dark:bg-opacity-90">
-        <nav class="container mx-auto px-4 flex justify-between items-center">
-            <a href="#hero" class="text-2xl font-bold gradient-text">Afsar Ali</a>
+<header class="fixed top-0 left-0 w-full bg-white/80 dark:bg-dark-bg/80 backdrop-blur-xl z-50 border-b border-gray-200/50 dark:border-gray-800/50 transition-all duration-300">
+    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <!-- Logo -->
+<a href="#hero" class="text-2xl font-bold gradient-text flex items-center space-x-2 group">
+    <div class="w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center group-hover:scale-110 transition-transform">
+        <img 
+            src="https://firebasestorage.googleapis.com/v0/b/again-firebase-82baf.appspot.com/o/logo%2FPhotoroom-20250206_194135.png?alt=media&token=b3fa1dd5-e747-4083-a10c-c5f3aa78494b" 
+            alt="Afsar Ali Logo"
+            class="w-full h-full object-contain"
+        />
+    </div>
+    <span class="hidden sm:inline">Afsar Ali</span>
+</a>
+        
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-1">
+            <a href="#about" class="nav-link px-4 py-2 text-primary-text dark:text-white hover:text-accent-blue dark:hover:text-accent-cyan transition-colors rounded-xl hover:bg-accent-blue/5 dark:hover:bg-accent-cyan/5">
+                About
+            </a>
+            <a href="#services" class="nav-link px-4 py-2 text-primary-text dark:text-white hover:text-accent-blue dark:hover:text-accent-cyan transition-colors rounded-xl hover:bg-accent-blue/5 dark:hover:bg-accent-cyan/5">
+                Services
+            </a>
+            <a href="#projects" class="nav-link px-4 py-2 text-primary-text dark:text-white hover:text-accent-blue dark:hover:text-accent-cyan transition-colors rounded-xl hover:bg-accent-blue/5 dark:hover:bg-accent-cyan/5">
+                Projects
+            </a>
+            <a href="#skills" class="nav-link px-4 py-2 text-primary-text dark:text-white hover:text-accent-blue dark:hover:text-accent-cyan transition-colors rounded-xl hover:bg-accent-blue/5 dark:hover:bg-accent-cyan/5">
+                Skills
+            </a>
+            <a href="#contact" class="nav-link px-4 py-2 text-primary-text dark:text-white hover:text-accent-blue dark:hover:text-accent-cyan transition-colors rounded-xl hover:bg-accent-blue/5 dark:hover:bg-accent-cyan/5">
+                Contact
+            </a>
             
-            <!-- Desktop Navigation -->
-            <div class="space-x-6 hidden md:flex">
-                <a href="#about" class="text-primary-text hover:text-accent-blue transition-colors dark:text-white dark:hover:text-accent-blue">About</a>
-                <a href="#projects" class="text-primary-text hover:text-accent-blue transition-colors dark:text-white dark:hover:text-accent-blue">Projects</a>
-                <a href="#skills" class="text-primary-text hover:text-accent-blue transition-colors dark:text-white dark:hover:text-accent-blue">Skills</a>
-                <a href="#experience" class="text-primary-text hover:text-accent-blue transition-colors dark:text-white dark:hover:text-accent-blue">Experience</a>
-                <a href="#contact" class="text-primary-text hover:text-accent-blue transition-colors dark:text-white dark:hover:text-accent-blue">Contact</a>
+            <a href="#contact" class="ml-4 px-6 py-2 bg-gradient-to-r from-accent-blue to-accent-purple text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
+                Hire Me
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <div class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden">
-                <div class="hamburger-icon">
-                    <span class="dark:bg-white"></span>
-                    <span class="dark:bg-white"></span>
-                    <span class="dark:bg-white"></span>
-                </div>
-            </button>
-        </nav>
-    </header>
+        </button>
+    </nav>
+</header>
+
+<style>
+/* Active nav link indicator */
+.nav-link.active {
+    color: var(--accent-blue);
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.dark .nav-link.active {
+    color: var(--accent-cyan);
+    background-color: rgba(6, 182, 212, 0.05);
+}
+
+/* Scroll behavior for header */
+.header-scrolled {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+</style>
+
+<script>
+// Add active state to navigation links based on scroll position
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.querySelector('header');
+    
+    // Add shadow on scroll
+    if (window.scrollY > 10) {
+        header.classList.add('header-scrolled');
+    } else {
+        header.classList.remove('header-scrolled');
+    }
+    
+    // Update active link
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
