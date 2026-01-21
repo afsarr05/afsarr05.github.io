@@ -17,7 +17,7 @@ SERVICES OFFERED:
    - Firebase integration (Auth, Database, Storage, Notifications)
    - State management (GetX, Provider, Riverpod)
    - RESTful API integration
-   - Pricing: Starting from $500-$2000 depending on complexity
+   - Pricing: Starting from $100-$2000 depending on complexity
    - Timeline: 2-8 weeks for most projects
 
 2. Web Development
@@ -25,7 +25,7 @@ SERVICES OFFERED:
    - Modern frameworks (React, Vue, vanilla JS)
    - WordPress development and customization
    - E-commerce solutions
-   - Pricing: $300-$1500 depending on requirements
+   - Pricing: $90-$1500 depending on requirements
    - Timeline: 1-4 weeks
 
 3. AI Chatbots & Automation
@@ -33,7 +33,7 @@ SERVICES OFFERED:
    - Intelligent customer service automation
    - Workflow automation solutions
    - Integration with existing systems
-   - Pricing: $400-$2000 based on complexity
+   - Pricing: $150-$2000 based on complexity
    - Timeline: 1-3 weeks
 
 4. API Integrations
@@ -41,7 +41,7 @@ SERVICES OFFERED:
    - Custom API development
    - Payment gateway integration (Stripe, PayPal)
    - Social media API integration
-   - Pricing: $200-$800 per integration
+   - Pricing: $199-$800 per integration
    - Timeline: Few days to 1 week
 
 ABOUT AFSAR:

@@ -5,7 +5,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebas
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
 
-<<<<<<< HEAD
 // Get Firebase config from config.js or use default
 let firebaseConfig;
 if (typeof window !== 'undefined' && window.config) {
@@ -22,30 +21,15 @@ if (typeof window !== 'undefined' && window.config) {
         measurementId: "G-PLE2XPXQ03"
     };
 }
-=======
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAizUdQv_RTVsUS-3Ogit_ztrYhvyOdLWY",
-  authDomain: "again-firebase-82baf.firebaseapp.com",
-  projectId: "again-firebase-82baf",
-  storageBucket: "again-firebase-82baf.appspot.com",
-  messagingSenderId: "885321882779",
-  appId: "1:885321882779:web:36f5eef08cb8bb9140ba3e",
-  measurementId: "G-PLE2XPXQ03"
-};
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-<<<<<<< HEAD
 // Store all projects data globally for modal access
 const projectsData = new Map();
 
-=======
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e
 // Load Work Projects
 async function loadProjects() {
   const querySnapshot = await getDocs(collection(db, "projects"));
@@ -77,12 +61,8 @@ async function loadProjects() {
     const card = `
       <div class="project-card group bg-secondary-bg dark:bg-dark-card rounded-3xl shadow-lg overflow-hidden cursor-pointer" 
            data-animate-on-scroll
-<<<<<<< HEAD
            data-project-id="${projectId}"
            data-project-type="work">
-=======
-           data-project-id="${doc.id}">
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e
         <!-- Image -->
         <div class="relative overflow-hidden h-64">
           <img src="${firstImage}" 
@@ -174,12 +154,8 @@ async function loadHobbyProjects() {
     const card = `
       <div class="project-card group bg-secondary-bg dark:bg-dark-card rounded-3xl shadow-lg overflow-hidden cursor-pointer" 
            data-animate-on-scroll
-<<<<<<< HEAD
            data-project-id="${projectId}"
            data-project-type="hobby">
-=======
-           data-project-id="${doc.id}">
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e
         <div class="relative overflow-hidden h-64">
           <img src="${firstImage}" 
                alt="${data.title || 'Project'}" 
@@ -254,7 +230,6 @@ function attachProjectClickHandlers() {
       const projectId = newCard.dataset.projectId;
       if (!projectId) return;
       
-<<<<<<< HEAD
       // Get project data from our stored map
       const projectData = projectsData.get(projectId);
       
@@ -264,13 +239,6 @@ function attachProjectClickHandlers() {
       }
       
       // Open modal with the correct project data
-=======
-      // Get project data
-      const projectData = await getProjectData(projectId);
-      if (!projectData) return;
-      
-      // Open modal
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e
       if (window.projectModal) {
         window.projectModal.open(projectData);
       }
@@ -278,47 +246,12 @@ function attachProjectClickHandlers() {
   });
 }
 
-<<<<<<< HEAD
 // Get project data - now simplified since we store it in memory
 async function getProjectData(projectId) {
   // Return from our stored data
   return projectsData.get(projectId) || null;
-=======
-// Get project data from Firestore
-async function getProjectData(projectId) {
-  try {
-    // Try work projects first
-    let querySnapshot = await getDocs(collection(db, "projects"));
-    let projectDoc = null;
-    
-    querySnapshot.forEach((doc) => {
-      if (doc.id === projectId) {
-        projectDoc = { id: doc.id, ...doc.data() };
-      }
-    });
-    
-    // If not found, try hobby projects
-    if (!projectDoc) {
-      querySnapshot = await getDocs(collection(db, "hobby_projects"));
-      querySnapshot.forEach((doc) => {
-        if (doc.id === projectId) {
-          projectDoc = { id: doc.id, ...doc.data() };
-        }
-      });
-    }
-    
-    return projectDoc;
-  } catch (error) {
-    console.error('Error fetching project:', error);
-    return null;
-  }
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e
 }
 
 // Initialize
 loadProjects();
-<<<<<<< HEAD
 loadHobbyProjects();
-=======
-loadHobbyProjects();
->>>>>>> 93bb626ed6aa237678c6f024e1d224b4a0e3523e

@@ -345,7 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Theme toggle
-    // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
     const html = document.documentElement;
@@ -363,14 +362,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     themeToggle?.addEventListener('click', toggleTheme);
     themeToggleMobile?.addEventListener('click', toggleTheme);
-    themeToggle?.addEventListener('click', toggleTheme);
-    themeToggleMobile?.addEventListener('click', toggleTheme);
 
-    // Mobile menu
     // Mobile menu
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    const hamburgerIcon = mobileMenuBtn?.querySelector('.hamburger-icon');
     const hamburgerIcon = mobileMenuBtn?.querySelector('.hamburger-icon');
 
     const toggleMobileMenu = () => {
@@ -379,33 +374,26 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileMenu.classList.remove('-translate-x-full');
             mobileMenu.classList.add('translate-x-0');
             hamburgerIcon?.classList.add('open');
-            hamburgerIcon?.classList.add('open');
         } else {
             mobileMenu.classList.add('-translate-x-full');
             mobileMenu.classList.remove('translate-x-0');
-            hamburgerIcon?.classList.remove('open');
             hamburgerIcon?.classList.remove('open');
         }
     };
 
     mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
-    mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
 
-    // Close mobile menu on link click
     // Close mobile menu on link click
     const mobileLinks = document.querySelectorAll('.mobile-link');
     mobileLinks.forEach(link => {
         link.addEventListener('click', toggleMobileMenu);
-        link.addEventListener('click', toggleMobileMenu);
     });
 
-    // Smooth scrolling
     // Smooth scrolling
     const navLinks = document.querySelectorAll('nav a, .get-in-touch-btn, .mobile-link');
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
-            if (href?.startsWith('#')) {
             if (href?.startsWith('#')) {
                 e.preventDefault();
                 const targetId = href.substring(1);
@@ -420,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Intersection Observer for scroll animations
     // Intersection Observer for scroll animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -439,7 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Contact form
     // Contact form
     const contactForm = document.getElementById('contact-form');
     contactForm?.addEventListener('submit', (e) => {
